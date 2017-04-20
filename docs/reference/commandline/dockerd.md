@@ -1221,11 +1221,27 @@ This is a full example of the allowed configuration options on Linux:
 > See https://docs.docker.com/engine/admin/systemd/#custom-docker-daemon-options for how
 > to accomplish this task with a systemd drop-in file.
 
-> **Note:** The default location of the configuration file on **Mac**
-> is `~/Library/Containers/com.docker.docker/Data/database/com.docker.driver.amd64-linux/etc/docker/daemon.json`
-> It is **not** recommend to edit the file manually (use the UI instead)
-> but if you want to read it, it's probably simpler to use:
-> `docker run -v /etc:/etc alpine cat /etc/docker/daemon.json`
+##### On Mac
+
+The default location of the configuration file on Mac is
+`~/Library/Containers/com.docker.docker/Data/database/com.docker.driver.amd64-linux/etc/docker/daemon.json`
+
+> **Note**: It is **not** recommend to edit the file manually (use the UI instead)
+
+But if you really want to update the file manually the correct sequence of operations is:
+
+```
+$ cd ~/Library/Containers/com.docker.docker/Data/database/
+$ git reset --hard
+$ emacs com.docker.driver.amd64-linux/etc/docker/daemon.json
+$ git commit -a -m "Update the daemon config"
+```
+
+> **Note:** This is really not recommend to do that when the Docker application is
+> running though, as the UI is caching the file in memory on startup so it could
+> result in conflicts and the application unable to restart. We also do not commit
+> by any means to keep that location stable and that path could randomly change in
+> the next releases of Docker for Mac.
 
 ##### On Windows
 
